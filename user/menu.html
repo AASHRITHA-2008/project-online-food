@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Menu & Catalog – FoodExpress</title>
+  <meta name="description" content="Browse our delicious food menu with search, category filtering, and instant cart ordering.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/user.css">
+</head>
+<body>
+
+  <!-- Protected User Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="home.html" class="brand-logo">
+        <span class="logo-icon">🍔</span>
+        <span>Food<span class="accent">Express</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="menu.html" class="nav-link active">Menu</a>
+        <a href="cart.html" class="nav-link">Cart</a>
+        <a href="orders.html" class="nav-link">My Orders</a>
+        <a href="profile.html" class="nav-link">Profile</a>
+        <a href="javascript:void(0)" onclick="logoutUser()" class="nav-link" style="color: var(--status-cancelled);">Logout 🚪</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="cart.html" class="cart-btn-link" title="Shopping Cart">
+          🛒
+          <span class="cart-badge" style="display: none;">0</span>
+        </a>
+        <div id="nav-user-info"></div>
+        <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Menu Content -->
+  <main class="container" style="padding-top: 2rem; padding-bottom: 4rem;">
+
+    <!-- Breadcrumb & Header -->
+    <div style="margin-bottom: 1.5rem;">
+      <span class="section-tag">Chef Curated</span>
+      <h1 style="font-size: 2.25rem;">Food Menu & Dishes</h1>
+      <p class="text-muted">Explore gourmet dishes from our kitchens and partner restaurants.</p>
+    </div>
+
+    <!-- Filters & Controls Bar -->
+    <div class="card" style="padding: 1.25rem; margin-bottom: 2rem; border-radius: var(--radius-lg);">
+      <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 1rem; align-items: center;">
+        
+        <!-- Search Input -->
+        <div>
+          <label class="form-label" style="font-size: 0.75rem; text-transform: uppercase;">Search Dish or Restaurant</label>
+          <input 
+            type="text" 
+            id="menu-search-input" 
+            class="form-control" 
+            placeholder="Type Chicken, Biryani, Pizza..." 
+            oninput="applyMenuFilters()">
+        </div>
+
+        <!-- Category Dropdown -->
+        <div>
+          <label class="form-label" style="font-size: 0.75rem; text-transform: uppercase;">Category</label>
+          <select id="menu-cat-select" class="form-control" onchange="applyMenuFilters()">
+            <option value="All">All Categories</option>
+            <option value="Biryani">Biryani</option>
+            <option value="Pizza">Pizza</option>
+            <option value="Burgers">Burgers</option>
+            <option value="Chinese">Chinese</option>
+            <option value="South Indian">South Indian</option>
+            <option value="North Indian">North Indian</option>
+            <option value="Desserts">Desserts</option>
+          </select>
+        </div>
+
+        <!-- Dietary Filter -->
+        <div>
+          <label class="form-label" style="font-size: 0.75rem; text-transform: uppercase;">Dietary Preference</label>
+          <select id="menu-diet-select" class="form-control" onchange="applyMenuFilters()">
+            <option value="All">All Dietary</option>
+            <option value="veg">🟢 Pure Veg Only</option>
+            <option value="nonveg">🔴 Non-Veg Only</option>
+          </select>
+        </div>
+
+        <!-- Sort By -->
+        <div>
+          <label class="form-label" style="font-size: 0.75rem; text-transform: uppercase;">Sort By</label>
+          <select id="menu-sort-select" class="form-control" onchange="applyMenuFilters()">
+            <option value="default">Default Recommended</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating">Top Rated (★)</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Quick category pills under filter box -->
+      <div class="category-chips-scroll" style="margin-top: 1rem; padding-bottom: 0;" id="quick-category-chips">
+        <button class="category-chip active" onclick="selectQuickCategory('All')">All</button>
+        <button class="category-chip" onclick="selectQuickCategory('Biryani')">Biryani</button>
+        <button class="category-chip" onclick="selectQuickCategory('Pizza')">Pizza</button>
+        <button class="category-chip" onclick="selectQuickCategory('Burgers')">Burgers</button>
+        <button class="category-chip" onclick="selectQuickCategory('Chinese')">Chinese</button>
+        <button class="category-chip" onclick="selectQuickCategory('South Indian')">South Indian</button>
+        <button class="category-chip" onclick="selectQuickCategory('North Indian')">North Indian</button>
+        <button class="category-chip" onclick="selectQuickCategory('Desserts')">Desserts</button>
+      </div>
+    </div>
+
+    <!-- Results Status Count -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+      <span id="results-count" style="font-weight: 600; color: var(--text-muted);">Showing all food items</span>
+      <button class="btn btn-secondary btn-sm" onclick="resetMenuFilters()">Reset Filters ↺</button>
+    </div>
+
+    <!-- Food Grid -->
+    <div class="food-grid" id="menu-food-grid">
+      <!-- Dynamically filled by food.js -->
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom" style="border:none; padding-top: 1rem;">
+      <p>&copy; 2026 FoodExpress – Dynamic Food Catalog</p>
+      <div style="display: flex; gap: 1.5rem;">
+        <a href="home.html">Home</a>
+        <a href="cart.html">View Cart</a>
+        <a href="orders.html">My Orders</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/food.js"></script>
+  <script src="../js/cart.js"></script>
+  <script>
+    checkUserAuth();
+
+    function selectQuickCategory(cat) {
+      document.getElementById('menu-cat-select').value = cat;
+      document.querySelectorAll('#quick-category-chips .category-chip').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === cat.toLowerCase());
+      });
+      applyMenuFilters();
+    }
+
+    function applyMenuFilters() {
+      const search = document.getElementById('menu-search-input').value.trim();
+      const category = document.getElementById('menu-cat-select').value;
+      const diet = document.getElementById('menu-diet-select').value;
+      const sortBy = document.getElementById('menu-sort-select').value;
+
+      currentFoodFilters = {
+        category,
+        searchQuery: search,
+        diet,
+        sortBy
+      };
+
+      const allItems = getAllFoodItems();
+      const filtered = filterAndSortFood(allItems, currentFoodFilters);
+
+      renderFoodGrid('menu-food-grid', filtered);
+
+      const countEl = document.getElementById('results-count');
+      if (countEl) {
+        countEl.textContent = `Showing ${filtered.length} of ${allItems.length} dish(es)`;
+      }
+    }
+
+    function resetMenuFilters() {
+      document.getElementById('menu-search-input').value = '';
+      document.getElementById('menu-cat-select').value = 'All';
+      document.getElementById('menu-diet-select').value = 'All';
+      document.getElementById('menu-sort-select').value = 'default';
+      selectQuickCategory('All');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check query parameter from search bar
+      const params = new URLSearchParams(window.location.search);
+      const initialSearch = params.get('search');
+      if (initialSearch) {
+        document.getElementById('menu-search-input').value = initialSearch;
+      }
+      applyMenuFilters();
+    });
+  </script>
+</body>
+</html>

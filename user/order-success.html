@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Placed Successfully! – FoodExpress</title>
+  <meta name="description" content="Your food order has been successfully placed with FoodExpress.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/user.css">
+</head>
+<body>
+
+  <!-- Protected User Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="home.html" class="brand-logo">
+        <span class="logo-icon">🍔</span>
+        <span>Food<span class="accent">Express</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="menu.html" class="nav-link">Menu</a>
+        <a href="cart.html" class="nav-link">Cart</a>
+        <a href="orders.html" class="nav-link">My Orders</a>
+        <a href="profile.html" class="nav-link">Profile</a>
+        <a href="javascript:void(0)" onclick="logoutUser()" class="nav-link" style="color: var(--status-cancelled);">Logout 🚪</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="cart.html" class="cart-btn-link" title="Shopping Cart">
+          🛒
+          <span class="cart-badge" style="display: none;">0</span>
+        </a>
+        <div id="nav-user-info"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Success Main -->
+  <main class="container" style="padding-top: 3.5rem; padding-bottom: 5rem; text-align: center;">
+    
+    <div style="width: 80px; height: 80px; border-radius: 50%; background: #D1FAE5; color: #10B981; font-size: 3rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.25);">
+      ✓
+    </div>
+
+    <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Order Placed Successfully! 🎉</h1>
+    <p class="text-muted" style="font-size: 1.1rem; max-width: 550px; margin: 0 auto 2.5rem;">
+      Thank you for ordering with FoodExpress! The kitchen is preparing your dishes right away.
+    </p>
+
+    <!-- Order Receipt Card -->
+    <div id="order-success-details">
+      <!-- Dynamically filled by orders.js renderOrderSuccessPage() -->
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom" style="border:none; padding-top: 1rem;">
+      <p>&copy; 2026 FoodExpress. Fast & Fresh Food Delivery.</p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/food.js"></script>
+  <script src="../js/cart.js"></script>
+  <script src="../js/orders.js"></script>
+  <script>
+    checkUserAuth();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderOrderSuccessPage();
+    });
+  </script>
+</body>
+</html>

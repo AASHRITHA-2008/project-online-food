@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Users – FoodExpress Admin</title>
+  <meta name="description" content="View and manage registered customers on FoodExpress.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <a href="dashboard.html" class="brand-logo">
+          <span class="logo-icon">🍔</span>
+          <span>Food<span class="accent">Express</span></span>
+        </a>
+        <span class="admin-badge">ADMIN</span>
+      </div>
+
+      <nav class="admin-nav">
+        <a href="dashboard.html" class="admin-nav-item">
+          <span class="admin-nav-icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="manage-food.html" class="admin-nav-item">
+          <span class="admin-nav-icon">🍲</span>
+          <span>Manage Food</span>
+        </a>
+        <a href="manage-orders.html" class="admin-nav-item">
+          <span class="admin-nav-icon">🛍️</span>
+          <span>Manage Orders</span>
+        </a>
+        <a href="manage-users.html" class="admin-nav-item active">
+          <span class="admin-nav-icon">👥</span>
+          <span>Manage Users</span>
+        </a>
+      </nav>
+
+      <div class="admin-sidebar-footer">
+        <a href="../index.html" class="btn btn-secondary btn-sm btn-block" style="margin-bottom: 0.6rem; justify-content: flex-start; color: #94A3B8; background: rgba(255,255,255,0.05); border-color: transparent;">
+          <span>🌐 View Storefront</span>
+        </a>
+        <button onclick="logoutAdmin()" class="btn btn-danger btn-sm btn-block" style="justify-content: flex-start;">
+          <span>🚪 Logout Admin</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main">
+      
+      <!-- Topbar -->
+      <header class="admin-topbar">
+        <div class="admin-title-wrap">
+          <h2>Registered Customers</h2>
+          <p>View registered user accounts, order volume, and customer directory</p>
+        </div>
+
+        <div class="admin-topbar-actions">
+          <button class="btn btn-secondary btn-sm" onclick="loadAdminUsers(); showToast('Users list refreshed', 'info');">
+            🔄 Refresh Users
+          </button>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="admin-content">
+
+        <!-- Users Table Card -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>Customer Accounts</h3>
+
+            <div class="admin-card-toolbar">
+              <input 
+                type="text" 
+                id="user-search-input" 
+                class="admin-search-input" 
+                placeholder="Search user name or email..." 
+                oninput="renderAdminUsersTable()">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Customer Profile</th>
+                  <th>Email Address</th>
+                  <th>Phone Number</th>
+                  <th>Location</th>
+                  <th>Order History</th>
+                  <th style="width: 80px;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="admin-users-table-body">
+                <!-- Dynamically rendered by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    checkAdminAuth();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadAdminUsers();
+    });
+  </script>
+</body>
+</html>

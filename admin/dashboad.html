@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard – FoodExpress</title>
+  <meta name="description" content="FoodExpress administrative overview, metrics, and operations dashboard.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <a href="dashboard.html" class="brand-logo">
+          <span class="logo-icon">🍔</span>
+          <span>Food<span class="accent">Express</span></span>
+        </a>
+        <span class="admin-badge">ADMIN</span>
+      </div>
+
+      <nav class="admin-nav">
+        <a href="dashboard.html" class="admin-nav-item active">
+          <span class="admin-nav-icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="manage-food.html" class="admin-nav-item">
+          <span class="admin-nav-icon">🍲</span>
+          <span>Manage Food</span>
+        </a>
+        <a href="manage-orders.html" class="admin-nav-item">
+          <span class="admin-nav-icon">🛍️</span>
+          <span>Manage Orders</span>
+        </a>
+        <a href="manage-users.html" class="admin-nav-item">
+          <span class="admin-nav-icon">👥</span>
+          <span>Manage Users</span>
+        </a>
+      </nav>
+
+      <div class="admin-sidebar-footer">
+        <a href="../index.html" class="btn btn-secondary btn-sm btn-block" style="margin-bottom: 0.6rem; justify-content: flex-start; color: #94A3B8; background: rgba(255,255,255,0.05); border-color: transparent;">
+          <span>🌐 View Storefront</span>
+        </a>
+        <button onclick="logoutAdmin()" class="btn btn-danger btn-sm btn-block" style="justify-content: flex-start;">
+          <span>🚪 Logout Admin</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main">
+      
+      <!-- Topbar -->
+      <header class="admin-topbar">
+        <div class="admin-title-wrap">
+          <h2>Overview Dashboard</h2>
+          <p>Real-time analytics and restaurant operations summary</p>
+        </div>
+
+        <div class="admin-topbar-actions">
+          <div class="admin-user-pill">
+            <div class="admin-avatar">A</div>
+            <span>Administrator</span>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="window.location.href='manage-food.html'">
+            + Add Food Item
+          </button>
+        </div>
+      </header>
+
+      <!-- Dashboard Content -->
+      <main class="admin-content">
+
+        <!-- 6 Metrics Cards Grid -->
+        <div class="stat-cards-grid">
+          
+          <div class="stat-card">
+            <div class="stat-icon blue">👥</div>
+            <div class="stat-details">
+              <h4>Total Users</h4>
+              <div class="stat-number" id="stat-total-users">0</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon orange">🍲</div>
+            <div class="stat-details">
+              <h4>Total Food Items</h4>
+              <div class="stat-number" id="stat-total-food">0</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon purple">🛍️</div>
+            <div class="stat-details">
+              <h4>Total Orders</h4>
+              <div class="stat-number" id="stat-total-orders">0</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon yellow">⏳</div>
+            <div class="stat-details">
+              <h4>Pending Orders</h4>
+              <div class="stat-number" id="stat-pending-orders">0</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon green">✅</div>
+            <div class="stat-details">
+              <h4>Completed Orders</h4>
+              <div class="stat-number" id="stat-completed-orders">0</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon emerald">💰</div>
+            <div class="stat-details">
+              <h4>Total Revenue</h4>
+              <div class="stat-number" id="stat-total-revenue">₹0</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Quick Order Status Explanation for SDC Review -->
+        <div style="background: #FFFFFF; border-radius: var(--radius-xl); padding: 1.25rem 1.75rem; margin-bottom: 2rem; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">💡 SDC Review Integration Feature:</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">
+              Change any order status below. The user tracking page immediately updates live without needing a database!
+            </p>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <span class="badge badge-placed">Placed</span> →
+            <span class="badge badge-confirmed">Confirmed</span> →
+            <span class="badge badge-preparing">Preparing</span> →
+            <span class="badge badge-delivery">Out for Delivery</span> →
+            <span class="badge badge-delivered">Delivered</span>
+          </div>
+        </div>
+
+        <!-- Recent Customer Orders -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>Recent Customer Orders</h3>
+            <a href="manage-orders.html" class="btn btn-secondary btn-sm">View All Orders →</a>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Amount</th>
+                  <th>Live Status (Update)</th>
+                  <th>Order Date</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-recent-orders">
+                <!-- Rendered by js/admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    checkAdminAuth();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initAdminDashboard();
+    });
+  </script>
+</body>
+</html>

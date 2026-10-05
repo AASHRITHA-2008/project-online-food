@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal Login – FoodExpress</title>
+  <meta name="description" content="Administrator portal login for FoodExpress restaurant and order management.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body style="background: radial-gradient(circle at 50% 30%, #1E232A 0%, #12161A 100%); color: #FFFFFF;">
+
+  <div class="auth-wrapper" style="background: transparent;">
+    <div class="auth-card" style="background: #1E232A; border-color: rgba(255, 255, 255, 0.1); color: #FFFFFF;">
+      
+      <div class="auth-header">
+        <a href="../index.html" class="brand-logo" style="color: #FFFFFF; justify-content: center; margin-bottom: 1rem;">
+          <span class="logo-icon">🍔</span>
+          <span>Food<span class="accent">Express</span></span>
+        </a>
+        <span class="badge" style="background: rgba(255, 87, 34, 0.2); color: #FF8A65; margin-bottom: 0.5rem; border: 1px solid rgba(255,87,34,0.4);">
+          ADMINISTRATION PORTAL
+        </span>
+        <h1 class="auth-title" style="color: #FFFFFF;">Management Access</h1>
+        <p class="auth-subtitle" style="color: #94A3B8;">Sign in to access restaurant controls, order status manager, and food items catalog.</p>
+      </div>
+
+      <form id="admin-login-form" onsubmit="handleAdminLoginSubmit(event)">
+        <div class="form-group" style="text-align: left;">
+          <label class="form-label" for="admin-user" style="color: #CBD5E1;">Admin Username</label>
+          <input 
+            type="text" 
+            id="admin-user" 
+            class="form-control" 
+            style="background: #12161A; border-color: #334155; color: #FFFFFF;"
+            placeholder="admin" 
+            required>
+        </div>
+
+        <div class="form-group" style="text-align: left;">
+          <label class="form-label" for="admin-pass" style="color: #CBD5E1;">Password</label>
+          <input 
+            type="password" 
+            id="admin-pass" 
+            class="form-control" 
+            style="background: #12161A; border-color: #334155; color: #FFFFFF;"
+            placeholder="••••••••" 
+            required>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;" id="admin-login-btn">
+          Sign In to Dashboard ⚡
+        </button>
+      </form>
+
+      <!-- Demo Credentials Quick Helper -->
+      <div class="auth-demo-box" style="background: rgba(255, 87, 34, 0.1); border-color: rgba(255, 87, 34, 0.4); margin-top: 1.5rem; color: #FFFFFF;">
+        <div>
+          <div style="font-weight: 700; color: #FF8A65;">Default Admin Credentials:</div>
+          <div style="color: #94A3B8; font-size: 0.8rem;">Username: <strong>admin</strong> | Password: <strong>admin123</strong></div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="fillAdminDemo()">
+          Auto-Fill
+        </button>
+      </div>
+
+      <div class="auth-footer" style="border-color: rgba(255, 255, 255, 0.1);">
+        <p><a href="../index.html" style="color: #94A3B8;">← Back to FoodExpress Storefront</a></p>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    function fillAdminDemo() {
+      document.getElementById('admin-user').value = 'admin';
+      document.getElementById('admin-pass').value = 'admin123';
+      showToast('Admin credentials filled!', 'info');
+    }
+
+    function handleAdminLoginSubmit(event) {
+      event.preventDefault();
+      const u = document.getElementById('admin-user').value;
+      const p = document.getElementById('admin-pass').value;
+      loginAdmin(u, p);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // If already logged in, redirect to dashboard
+      if (localStorage.getItem('adminLoggedIn') === 'true') {
+        window.location.href = 'dashboard.html';
+      }
+    });
+  </script>
+</body>
+</html>

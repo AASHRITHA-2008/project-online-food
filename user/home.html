@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Dashboard – FoodExpress</title>
+  <meta name="description" content="Browse menus, reorder favorite dishes, and track deliveries on FoodExpress.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/user.css">
+</head>
+<body>
+
+  <!-- Protected User Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="home.html" class="brand-logo">
+        <span class="logo-icon">🍔</span>
+        <span>Food<span class="accent">Express</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="home.html" class="nav-link active">Home</a>
+        <a href="menu.html" class="nav-link">Menu</a>
+        <a href="cart.html" class="nav-link">Cart</a>
+        <a href="orders.html" class="nav-link">My Orders</a>
+        <a href="profile.html" class="nav-link">Profile</a>
+        <a href="javascript:void(0)" onclick="logoutUser()" class="nav-link" style="color: var(--status-cancelled);">Logout 🚪</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="cart.html" class="cart-btn-link" title="Shopping Cart">
+          🛒
+          <span class="cart-badge" style="display: none;">0</span>
+        </a>
+        <div id="nav-user-info">
+          <!-- Dynamic user name pill -->
+        </div>
+        <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container" style="padding-top: 2.5rem; padding-bottom: 4rem;">
+
+    <!-- User Greeting Banner -->
+    <div style="background: linear-gradient(135deg, #181C24 0%, #242933 100%); border-radius: var(--radius-xl); padding: 2.5rem; color: #FFFFFF; position: relative; overflow: hidden; margin-bottom: 2.5rem; box-shadow: var(--shadow-lg);">
+      <div style="position: relative; z-index: 2; max-width: 650px;">
+        <span class="badge" style="background: rgba(255, 87, 34, 0.25); color: #FF8A65; margin-bottom: 0.75rem;">
+          ⚡ Rapid Delivery Active
+        </span>
+        <h1 style="color: #FFFFFF; font-size: 2.4rem; margin-bottom: 0.5rem;" id="user-greeting-title">
+          Welcome back! 👋
+        </h1>
+        <p style="color: #94A3B8; font-size: 1.05rem; margin-bottom: 1.75rem;">
+          What would you like to eat today? Freshly made biryanis, crispy pizzas, and hearty curries are ready for you.
+        </p>
+
+        <!-- Search Bar -->
+        <div class="hero-search-box" style="margin-bottom: 0;">
+          <input type="text" id="user-search-input" placeholder="Search dish, cuisine, or restaurant..." onkeypress="if(event.key==='Enter') redirectSearch()">
+          <button class="btn btn-primary" onclick="redirectSearch()">Search 🔍</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Order Tracker Bar (if active order exists) -->
+    <div id="active-order-banner" style="display: none; margin-bottom: 2.5rem;">
+      <!-- Populated via JS if user has active order -->
+    </div>
+
+    <!-- Food Categories -->
+    <section style="margin-bottom: 3rem;">
+      <div class="section-header">
+        <div>
+          <span class="section-tag">Explore Cuisines</span>
+          <h2>Food Categories</h2>
+        </div>
+        <a href="menu.html" class="btn btn-outline btn-sm">View All Menu →</a>
+      </div>
+
+      <div class="category-chips-scroll" id="category-pills">
+        <button class="category-chip active" onclick="filterCategory('All')">🍽️ All Items</button>
+        <button class="category-chip" onclick="filterCategory('Biryani')">🍚 Biryani</button>
+        <button class="category-chip" onclick="filterCategory('Pizza')">🍕 Pizza</button>
+        <button class="category-chip" onclick="filterCategory('Burgers')">🍔 Burgers</button>
+        <button class="category-chip" onclick="filterCategory('Chinese')">🥢 Chinese</button>
+        <button class="category-chip" onclick="filterCategory('South Indian')">🥞 South Indian</button>
+        <button class="category-chip" onclick="filterCategory('North Indian')">🍛 North Indian</button>
+        <button class="category-chip" onclick="filterCategory('Desserts')">🍰 Desserts</button>
+      </div>
+    </section>
+
+    <!-- Popular Dishes Grid -->
+    <section>
+      <div class="section-header">
+        <div>
+          <span class="section-tag">Chef's Recommendations</span>
+          <h2 id="popular-section-title">Popular Food Items</h2>
+        </div>
+        <a href="menu.html" class="btn btn-secondary btn-sm">See Full Catalog</a>
+      </div>
+
+      <div class="food-grid" id="dashboard-food-grid">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- Top Partner Restaurants -->
+    <section style="margin-top: 4rem;">
+      <div class="section-header">
+        <div>
+          <span class="section-tag">Quality Assured</span>
+          <h2>Top Partner Restaurants</h2>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;">
+        <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem; cursor: pointer;" onclick="window.location.href='menu.html?search=Paradise'">
+          <div style="font-size: 2.2rem; background: #FFF3E0; width: 60px; height: 60px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">🍲</div>
+          <div>
+            <h4 style="margin-bottom: 0.2rem;">Paradise Biryani</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Royal Hyderabadi Biryani • 4.8 ★</p>
+          </div>
+        </div>
+
+        <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem; cursor: pointer;" onclick="window.location.href='menu.html?search=Pizza+Hub'">
+          <div style="font-size: 2.2rem; background: #E8F5E9; width: 60px; height: 60px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">🍕</div>
+          <div>
+            <h4 style="margin-bottom: 0.2rem;">Pizza Hub</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Wood-Fired Pizzas • 4.7 ★</p>
+          </div>
+        </div>
+
+        <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem; cursor: pointer;" onclick="window.location.href='menu.html?search=Wok+Express'">
+          <div style="font-size: 2.2rem; background: #F3E8FF; width: 60px; height: 60px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">🥡</div>
+          <div>
+            <h4 style="margin-bottom: 0.2rem;">Wok Express</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Pan-Asian & Noodles • 4.6 ★</p>
+          </div>
+        </div>
+
+        <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem; cursor: pointer;" onclick="window.location.href='menu.html?search=Punjabi+Rasoi'">
+          <div style="font-size: 2.2rem; background: #FEF3C7; width: 60px; height: 60px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">🥘</div>
+          <div>
+            <h4 style="margin-bottom: 0.2rem;">Punjabi Rasoi</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Authentic Curries • 4.8 ★</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom" style="border:none; padding-top: 1rem;">
+      <p>&copy; 2026 FoodExpress. Logged in customer dashboard.</p>
+      <div style="display: flex; gap: 1.5rem;">
+        <a href="menu.html">Menu</a>
+        <a href="cart.html">Cart</a>
+        <a href="orders.html">My Orders</a>
+        <a href="profile.html">My Profile</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/food.js"></script>
+  <script src="../js/cart.js"></script>
+  <script src="../js/orders.js"></script>
+  <script>
+    const user = checkUserAuth();
+
+    function redirectSearch() {
+      const q = document.getElementById('user-search-input').value.trim();
+      window.location.href = `menu.html?search=${encodeURIComponent(q)}`;
+    }
+
+    function filterCategory(cat) {
+      document.querySelectorAll('#category-pills .category-chip').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.includes(cat) || (cat === 'All' && btn.textContent.includes('All')));
+      });
+
+      const all = getAllFoodItems();
+      const filtered = cat === 'All' ? all : all.filter(i => i.category.toLowerCase() === cat.toLowerCase());
+      renderFoodGrid('dashboard-food-grid', filtered.slice(0, 8));
+      document.getElementById('popular-section-title').textContent = cat === 'All' ? 'Popular Food Items' : `${cat} Dishes`;
+    }
+
+    // Check for user's latest in-progress order
+    function checkActiveOrder() {
+      if (!user) return;
+      const userOrders = getUserOrders(user.email);
+      const activeOrder = userOrders.find(o => o.status !== 'Delivered' && o.status !== 'Cancelled');
+      
+      const banner = document.getElementById('active-order-banner');
+      if (activeOrder && banner) {
+        banner.style.display = 'block';
+        banner.innerHTML = `
+          <div style="background: #FFFFFF; border-left: 5px solid var(--primary); border-radius: var(--radius-lg); padding: 1.25rem 1.75rem; box-shadow: var(--shadow-md); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <span style="font-size: 2rem;">🛵</span>
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <strong style="font-size: 1.1rem;">Active Order #${activeOrder.orderId}</strong>
+                  <span class="badge badge-${activeOrder.status.toLowerCase().replace(/\s+/g, '-')}">${activeOrder.status}</span>
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">
+                  ${activeOrder.items.length} items • ${formatCurrency(activeOrder.total)} • Placed at ${activeOrder.date}
+                </p>
+              </div>
+            </div>
+            <a href="track-order.html?orderId=${activeOrder.orderId}" class="btn btn-primary btn-sm">
+              Track Live Order 📍
+            </a>
+          </div>
+        `;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (user) {
+        document.getElementById('user-greeting-title').textContent = `Welcome back, ${user.name.split(' ')[0]}! 👋`;
+      }
+      checkActiveOrder();
+      filterCategory('All');
+    });
+  </script>
+</body>
+</html>

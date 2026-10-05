@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout & Delivery – FoodExpress</title>
+  <meta name="description" content="Provide delivery address and payment preference to place your FoodExpress order.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/user.css">
+</head>
+<body>
+
+  <!-- Protected User Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="home.html" class="brand-logo">
+        <span class="logo-icon">🍔</span>
+        <span>Food<span class="accent">Express</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="menu.html" class="nav-link">Menu</a>
+        <a href="cart.html" class="nav-link">Cart</a>
+        <a href="orders.html" class="nav-link">My Orders</a>
+        <a href="profile.html" class="nav-link">Profile</a>
+        <a href="javascript:void(0)" onclick="logoutUser()" class="nav-link" style="color: var(--status-cancelled);">Logout 🚪</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="cart.html" class="cart-btn-link" title="Shopping Cart">
+          🛒
+          <span class="cart-badge" style="display: none;">0</span>
+        </a>
+        <div id="nav-user-info"></div>
+        <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Checkout Main -->
+  <main class="container" style="padding-top: 2rem; padding-bottom: 4rem;">
+    <div style="margin-bottom: 1.5rem;">
+      <span class="section-tag">Final Step</span>
+      <h1 style="font-size: 2.25rem;">Checkout & Delivery Details 🛵</h1>
+    </div>
+
+    <div class="checkout-layout">
+      <!-- Checkout Form (left) -->
+      <div class="card" style="padding: 2.25rem; border-radius: var(--radius-xl);">
+        <h3 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <span>📍</span> 1. Delivery Address
+        </h3>
+
+        <form id="checkout-form" novalidate onsubmit="handlePlaceOrder(event)">
+          <div class="form-row">
+            <div class="form-group" id="grp-checkout-name">
+              <label class="form-label" for="checkout-name">Full Name *</label>
+              <input type="text" id="checkout-name" class="form-control" required placeholder="Your full name">
+              <div class="form-error">Please enter recipient full name</div>
+            </div>
+
+            <div class="form-group" id="grp-checkout-phone">
+              <label class="form-label" for="checkout-phone">Phone Number *</label>
+              <input type="tel" id="checkout-phone" class="form-control" required maxlength="10" placeholder="10-digit mobile number">
+              <div class="form-error">Please enter valid 10-digit phone number</div>
+            </div>
+          </div>
+
+          <div class="form-group" id="grp-checkout-address">
+            <label class="form-label" for="checkout-address">Delivery Address (House/Flat No., Street, Landmark) *</label>
+            <textarea id="checkout-address" class="form-control" rows="3" required placeholder="e.g. Flat 302, Sunrise Heights, 12th Cross Road"></textarea>
+            <div class="form-error">Please enter your delivery street address</div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" id="grp-checkout-city">
+              <label class="form-label" for="checkout-city">City *</label>
+              <input type="text" id="checkout-city" class="form-control" required placeholder="e.g. Bengaluru">
+              <div class="form-error">Please enter city</div>
+            </div>
+
+            <div class="form-group" id="grp-checkout-pincode">
+              <label class="form-label" for="checkout-pincode">Pincode *</label>
+              <input type="text" id="checkout-pincode" class="form-control" required maxlength="6" placeholder="e.g. 560038">
+              <div class="form-error">Please enter 6-digit postal pincode</div>
+            </div>
+          </div>
+
+          <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border-color);">
+
+          <!-- Payment Options -->
+          <h3 style="margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span>💳</span> 2. Payment Method
+          </h3>
+
+          <div class="payment-method-card active" onclick="selectPaymentMethod('Cash on Delivery', this)">
+            <input type="radio" name="paymentMethod" value="Cash on Delivery" checked id="pay-cod">
+            <div>
+              <label for="pay-cod" style="font-weight: 700; cursor: pointer; display: block;">💵 Cash on Delivery (COD)</label>
+              <small style="color: var(--text-muted);">Pay in cash or UPI QR scan to delivery partner upon arrival.</small>
+            </div>
+          </div>
+
+          <div class="payment-method-card" onclick="selectPaymentMethod('Online Payment (UPI/Cards)', this)">
+            <input type="radio" name="paymentMethod" value="Online Payment (UPI/Cards)" id="pay-online">
+            <div>
+              <label for="pay-online" style="font-weight: 700; cursor: pointer; display: block;">⚡ Online Payment (Simulation)</label>
+              <small style="color: var(--text-muted);">Instant mock payment via UPI (GPay/PhonePe), Credit/Debit Card or Net Banking.</small>
+            </div>
+          </div>
+
+          <div style="margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary btn-lg btn-block" id="btn-place-order">
+              Confirm & Place Order 🚀
+            </button>
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: 0.75rem;">
+              🔒 Safe & Secure ordering. No real payment charged (SDC Simulation).
+            </p>
+          </div>
+        </form>
+      </div>
+
+      <!-- Order Review Sidebar (right) -->
+      <div>
+        <div class="order-summary-card" id="checkout-summary-card">
+          <!-- Dynamically populated via JS -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom" style="border:none; padding-top: 1rem;">
+      <p>&copy; 2026 FoodExpress. Online Food Delivery System.</p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/food.js"></script>
+  <script src="../js/cart.js"></script>
+  <script src="../js/orders.js"></script>
+  <script>
+    const user = checkUserAuth();
+
+    let selectedPayment = 'Cash on Delivery';
+
+    function selectPaymentMethod(method, element) {
+      selectedPayment = method;
+      document.querySelectorAll('.payment-method-card').forEach(card => card.classList.remove('active'));
+      element.classList.add('active');
+      const radio = element.querySelector('input[type="radio"]');
+      if (radio) radio.checked = true;
+    }
+
+    function renderCheckoutSummary() {
+      const cart = getCart();
+      if (!cart || cart.length === 0) {
+        showToast('Your cart is empty! Redirecting to cart...', 'warning');
+        window.location.href = 'cart.html';
+        return;
+      }
+
+      const totals = calculateCartTotals();
+      const summaryCard = document.getElementById('checkout-summary-card');
+
+      summaryCard.innerHTML = `
+        <h3>Order Items (${totals.itemCount})</h3>
+        <div style="max-height: 220px; overflow-y: auto; margin-bottom: 1.25rem; padding-right: 0.5rem;">
+          ${cart.map(item => `
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.65rem; font-size: 0.9rem;">
+              <div>
+                <span class="diet-indicator ${item.isVeg ? 'veg' : 'non-veg'}" style="margin-right: 4px;"></span>
+                <span>${item.name}</span> × ${item.quantity}
+              </div>
+              <strong>${formatCurrency(item.price * item.quantity)}</strong>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="summary-line">
+          <span>Subtotal</span>
+          <strong>${formatCurrency(totals.subtotal)}</strong>
+        </div>
+
+        <div class="summary-line">
+          <span>Delivery Fee</span>
+          <strong>${totals.deliveryFee === 0 ? '<span style="color:var(--status-delivered)">FREE</span>' : formatCurrency(totals.deliveryFee)}</strong>
+        </div>
+
+        <div class="summary-total">
+          <span>Grand Total</span>
+          <span style="color: var(--primary);">${formatCurrency(totals.grandTotal)}</span>
+        </div>
+      `;
+    }
+
+    function handlePlaceOrder(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('checkout-name').value.trim();
+      const phone = document.getElementById('checkout-phone').value.trim();
+      const address = document.getElementById('checkout-address').value.trim();
+      const city = document.getElementById('checkout-city').value.trim();
+      const pincode = document.getElementById('checkout-pincode').value.trim();
+
+      document.querySelectorAll('.form-group').forEach(fg => fg.classList.remove('has-error'));
+
+      let hasError = false;
+      if (!name) { document.getElementById('grp-checkout-name').classList.add('has-error'); hasError = true; }
+      if (!phone || phone.replace(/\D/g, '').length < 10) { document.getElementById('grp-checkout-phone').classList.add('has-error'); hasError = true; }
+      if (!address) { document.getElementById('grp-checkout-address').classList.add('has-error'); hasError = true; }
+      if (!city) { document.getElementById('grp-checkout-city').classList.add('has-error'); hasError = true; }
+      if (!pincode || pincode.length < 6) { document.getElementById('grp-checkout-pincode').classList.add('has-error'); hasError = true; }
+
+      if (hasError) {
+        showToast('Please fill all required delivery details properly', 'error');
+        return;
+      }
+
+      // Disable button to prevent double-submit
+      const btn = document.getElementById('btn-place-order');
+      btn.disabled = true;
+      btn.textContent = 'Processing Order... ⏳';
+
+      const orderData = {
+        customerName: name,
+        phone,
+        address,
+        city,
+        pincode,
+        paymentMethod: selectedPayment
+      };
+
+      const order = placeOrder(orderData);
+
+      if (order) {
+        setTimeout(() => {
+          window.location.href = `order-success.html?orderId=${order.orderId}`;
+        }, 600);
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Confirm & Place Order 🚀';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCheckoutSummary();
+
+      // Autofill from user profile if available
+      if (user) {
+        document.getElementById('checkout-name').value = user.name || '';
+        document.getElementById('checkout-phone').value = user.phone || '';
+        document.getElementById('checkout-address').value = user.address || '';
+        document.getElementById('checkout-city').value = user.city || 'Bengaluru';
+        document.getElementById('checkout-pincode').value = user.pincode || '560038';
+      }
+    });
+  </script>
+</body>
+</html>

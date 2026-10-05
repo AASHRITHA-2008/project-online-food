@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Profile – FoodExpress</title>
+  <meta name="description" content="Manage your FoodExpress profile details, address, and account security.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/user.css">
+</head>
+<body>
+
+  <!-- Protected User Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="home.html" class="brand-logo">
+        <span class="logo-icon">🍔</span>
+        <span>Food<span class="accent">Express</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="home.html" class="nav-link">Home</a>
+        <a href="menu.html" class="nav-link">Menu</a>
+        <a href="cart.html" class="nav-link">Cart</a>
+        <a href="orders.html" class="nav-link">My Orders</a>
+        <a href="profile.html" class="nav-link active">Profile</a>
+        <a href="javascript:void(0)" onclick="logoutUser()" class="nav-link" style="color: var(--status-cancelled);">Logout 🚪</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="cart.html" class="cart-btn-link" title="Shopping Cart">
+          🛒
+          <span class="cart-badge" style="display: none;">0</span>
+        </a>
+        <div id="nav-user-info"></div>
+        <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Profile Main -->
+  <main class="container container-sm" style="padding-top: 2rem; padding-bottom: 4rem;">
+    <div style="margin-bottom: 2rem;">
+      <span class="section-tag">Account Settings</span>
+      <h1 style="font-size: 2.25rem;">My Profile 👤</h1>
+      <p class="text-muted">Manage your personal information, delivery addresses, and security.</p>
+    </div>
+
+    <!-- User Header Card with Avatar & Stats -->
+    <div class="card" style="padding: 2rem; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; background: linear-gradient(135deg, #FFFFFF 0%, #FFF8F5 100%);">
+      <div style="display: flex; align-items: center; gap: 1.25rem;">
+        <div id="profile-avatar" style="width: 72px; height: 72px; border-radius: 50%; background: var(--primary-gradient); color: #FFFFFF; font-size: 2rem; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px var(--primary-glow);">
+          U
+        </div>
+        <div>
+          <h2 id="profile-display-name" style="font-size: 1.5rem; margin-bottom: 0.2rem;">User Name</h2>
+          <p id="profile-display-email" style="color: var(--text-muted); font-size: 0.9rem;">user@example.com</p>
+          <span class="badge" style="background: #DCFCE7; color: #16A34A; margin-top: 0.4rem;">Verified Customer</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 1.5rem;">
+        <div style="text-align: center; background: #FFFFFF; padding: 0.75rem 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+          <div style="font-size: 1.4rem; font-weight: 800; color: var(--primary);" id="stat-profile-orders">0</div>
+          <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Orders</span>
+        </div>
+        <div style="text-align: center; background: #FFFFFF; padding: 0.75rem 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+          <div style="font-size: 1.4rem; font-weight: 800; color: var(--dark);" id="stat-profile-spent">₹0</div>
+          <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Total Spent</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Profile Form -->
+    <div class="card" style="padding: 2.25rem; margin-bottom: 2rem;">
+      <h3 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span>📝</span> Personal Details & Delivery Address
+      </h3>
+
+      <form id="profile-form" onsubmit="handleProfileUpdate(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="edit-name">Full Name *</label>
+            <input type="text" id="edit-name" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="edit-email">Email Address</label>
+            <input type="email" id="edit-email" class="form-control" disabled style="background:#F1F5F9; cursor:not-allowed;" title="Email cannot be changed">
+            <small class="form-text">Your login email cannot be changed.</small>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="edit-phone">Phone Number *</label>
+            <input type="tel" id="edit-phone" class="form-control" required maxlength="10">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="edit-city">City *</label>
+            <input type="text" id="edit-city" class="form-control" placeholder="e.g. Bengaluru">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label class="form-label" for="edit-address">Default Delivery Address *</label>
+            <textarea id="edit-address" class="form-control" rows="3" placeholder="Building, Street, Landmark..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-group" style="max-width: 250px;">
+          <label class="form-label" for="edit-pincode">Pincode</label>
+          <input type="text" id="edit-pincode" class="form-control" maxlength="6" placeholder="e.g. 560038">
+        </div>
+
+        <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border-color);">
+
+        <!-- Password Change (Optional) -->
+        <h3 style="margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+          <span>🔒</span> Change Password (Optional)
+        </h3>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="edit-new-pass">New Password</label>
+            <input type="password" id="edit-new-pass" class="form-control" placeholder="Leave empty to keep current password" minlength="6">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="edit-confirm-pass">Confirm New Password</label>
+            <input type="password" id="edit-confirm-pass" class="form-control" placeholder="Repeat new password">
+          </div>
+        </div>
+
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+          <button type="submit" class="btn btn-primary btn-lg">
+            Save Profile Changes 💾
+          </button>
+          <a href="home.html" class="btn btn-secondary btn-lg">Cancel</a>
+        </div>
+      </form>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-bottom" style="border:none; padding-top: 1rem;">
+      <p>&copy; 2026 FoodExpress. User Profile & Account Settings.</p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/orders.js"></script>
+  <script>
+    const user = checkUserAuth();
+
+    function populateProfileData() {
+      if (!user) return;
+
+      document.getElementById('profile-avatar').textContent = user.name.charAt(0).toUpperCase();
+      document.getElementById('profile-display-name').textContent = user.name;
+      document.getElementById('profile-display-email').textContent = user.email;
+
+      document.getElementById('edit-name').value = user.name || '';
+      document.getElementById('edit-email').value = user.email || '';
+      document.getElementById('edit-phone').value = user.phone || '';
+      document.getElementById('edit-city').value = user.city || '';
+      document.getElementById('edit-address').value = user.address || '';
+      document.getElementById('edit-pincode').value = user.pincode || '';
+
+      // User stats
+      const userOrders = getUserOrders(user.email);
+      const totalSpent = userOrders.reduce((sum, o) => sum + (Number(o.total) || 0), 0);
+
+      document.getElementById('stat-profile-orders').textContent = userOrders.length;
+      document.getElementById('stat-profile-spent').textContent = formatCurrency(totalSpent);
+    }
+
+    function handleProfileUpdate(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('edit-name').value.trim();
+      const phone = document.getElementById('edit-phone').value.trim();
+      const city = document.getElementById('edit-city').value.trim();
+      const address = document.getElementById('edit-address').value.trim();
+      const pincode = document.getElementById('edit-pincode').value.trim();
+      const newPass = document.getElementById('edit-new-pass').value;
+      const confirmPass = document.getElementById('edit-confirm-pass').value;
+
+      if (!name || !phone) {
+        showToast('Name and phone number are required', 'error');
+        return;
+      }
+
+      if (newPass) {
+        if (newPass.length < 6) {
+          showToast('New password must be at least 6 characters', 'error');
+          return;
+        }
+        if (newPass !== confirmPass) {
+          showToast('New passwords do not match', 'error');
+          return;
+        }
+      }
+
+      const updated = {
+        name,
+        phone,
+        city,
+        address,
+        pincode
+      };
+
+      if (newPass) {
+        updated.newPassword = newPass;
+      }
+
+      const ok = updateUserProfile(updated);
+      if (ok) {
+        document.getElementById('profile-display-name').textContent = name;
+        document.getElementById('profile-avatar').textContent = name.charAt(0).toUpperCase();
+        document.getElementById('edit-new-pass').value = '';
+        document.getElementById('edit-confirm-pass').value = '';
+        renderUserNavbarInfo();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      populateProfileData();
+    });
+  </script>
+</body>
+</html>
